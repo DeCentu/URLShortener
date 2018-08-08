@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 offset-md-2 jumbotron">
+      <label for="basic-url">Your URl</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+      </div>
+
+
+      <label for="basic-url">Shortener URL
+      </label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">{{ url }}</span>
+        </div>
+        <input type="text" (keyup)="onKey($event)" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        <br/>
+      </div>
+      
+      <small id="inputHelp" class="text-muted input-group mb-3">
+          Leave this field empty if you wanna generate an url
+      </small>
+      
+      <div class="input-group mb-3">
+        <button type="button" class="btn btn-primary" (click)="getUrls()">Generate</button>
+      </div>
+      
+      <div class="input-group mb-3">
+        <input type="text" value="{{ value }}" class="form-control" aria-label="Copy link" aria-describedby="button-addon1" readonly>
+       <!--  <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon1">Copy</button>
+        </div> -->
+      </div>
+      
+      <small id="inputHelp" class="text-muted input-group mb-3">
+          The URL pair will be deleted after 15 days
+      </small>
+
+      {{answer.general_url}}
+
+    </div>
+  </div>
+</div>
