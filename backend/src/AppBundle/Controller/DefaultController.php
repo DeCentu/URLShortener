@@ -11,12 +11,21 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage", methods={"POST"})
+     * @Route("/", name="homepage")
      */
-
-
     public function indexAction()
+    {
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/get", name="get")
+     */
+    public function getAction()
     {
        return new JsonResponse(['general_url' => 'http://example.com/', 'short_url' => 'http://test.short/a']);
     }
+
+
+  
 }

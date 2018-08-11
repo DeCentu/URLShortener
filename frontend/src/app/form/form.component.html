@@ -1,10 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-8 offset-md-2 jumbotron">
+    <div *ngIf="added_urls == false" class="col-sm-12 col-md-8 offset-md-2 jumbotron">
       <label for="basic-url">Your URl</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        <input type="text" class="form-control" id="basic-url" (blur)="check_onBlur_general($event)" aria-describedby="basic-addon3">
       </div>
+
+      <div *ngIf="check_general_url == false" class="alert alert-danger">Url is invalid. Please, check this or try later</div>
 
 
       <label for="basic-url">Shortener URL
@@ -13,31 +15,36 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">{{ url }}</span>
         </div>
-        <input type="text" (keyup)="onKey($event)" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        <input type="text" (keyup)="onKey($event)" (onBlur)="check_onBlur_short($event)" class="form-control" id="basic-url" aria-describedby="basic-addon3">
         <br/>
       </div>
       
       <small id="inputHelp" class="text-muted input-group mb-3">
           Leave this field empty if you wanna generate an url
       </small>
+
+      <div *ngIf="check_shorter_url == false" class="alert alert-danger">This url already exist. Please, change url.</div>
       
       <div class="input-group mb-3">
-        <button type="button" class="btn btn-primary" (click)="getUrls()">Generate</button>
+        <button [disabled]='checks_url ? false : true' type="button" class="btn btn-primary">Generate</button>
       </div>
+    </div>
+
+
       
+    <div *ngIf="added_urls == true" class="col-sm-12 col-md-8 offset-md-2 jumbotron">
       <div class="input-group mb-3">
         <input type="text" value="{{ value }}" class="form-control" aria-label="Copy link" aria-describedby="button-addon1" readonly>
-       <!--  <div class="input-group-append">
+        <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" id="button-addon1">Copy</button>
-        </div> -->
+        </div>
       </div>
       
       <small id="inputHelp" class="text-muted input-group mb-3">
           The URL pair will be deleted after 15 days
       </small>
-
-      {{answer.general_url}}
-
     </div>
+
+
   </div>
 </div>

@@ -1,2 +1,0 @@
-# URLShortener
-Test project.
