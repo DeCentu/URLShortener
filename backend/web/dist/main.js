@@ -140,7 +140,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".alert {\r\n    margin-top: 1rem;\r\n}"
+module.exports = ".alert {\r\n    margin-top: 1rem;\r\n}\r\n\r\nbutton {\r\n\tmargin-right: 1rem;\r\n}"
 
 /***/ }),
 
@@ -151,7 +151,7 @@ module.exports = ".alert {\r\n    margin-top: 1rem;\r\n}"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (blur)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" (onBlur)=\"check_onBlur_short($event)\" class=\"form-control\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <br/>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          Leave this field empty if you wanna generate an url\r\n      </small>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' type=\"button\" class=\"btn btn-primary\">Generate</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (keyup)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" (keyup)=\"check_onBlur_short($event)\" class=\"form-control\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <br/>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          Leave this field empty if you wanna generate an url\r\n      </small>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Generate</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"copyMessage()\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -181,14 +181,19 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var FormComponent = /** @class */ (function () {
     function FormComponent(service) {
         this.service = service;
-        this.url = "https://example.com/";
+        this.url = "http://127.0.0.1:8000/";
         this.value = this.url;
         this.check_general_url = true; // checking url where will be redirected
         this.check_shorter_url = true; // checking short url 
         this.done = true;
         this.added_urls = false;
+        this.general_url = '';
+        this.short_url = '';
         this.checks_url = false;
     }
+    FormComponent.prototype.onMouseMove = function (e) {
+        this.check();
+    };
     FormComponent.prototype.onKey = function (event) {
         this.value = this.url + event.target.value;
     };
@@ -198,16 +203,47 @@ var FormComponent = /** @class */ (function () {
             .service
             .check_general_url(event.target.value)
             .subscribe(function (data) { return _this.check_general_url = data['status']; });
+        this.general_url = event.target.value;
     };
     FormComponent.prototype.check_onBlur_short = function (event) {
         var _this = this;
         this
             .service
             .check_short_url(event.target.value)
-            .subscribe(function (data) { return _this.check_general_url = data['status']; });
+            .subscribe(function (data) { return _this.check_shorter_url = data['status']; });
+        this.short_url = event.target.value;
+    };
+    FormComponent.prototype.addUrls = function () {
+        var _this = this;
+        this
+            .service
+            .add_urls(this.general_url, this.short_url)
+            .subscribe(function (data) { return _this.added_urls = data['status']; });
+    };
+    FormComponent.prototype.check = function () {
+        this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, this.check_shorter_url);
+    };
+    FormComponent.prototype.copyMessage = function () {
+        var selBox = document.createElement('textarea');
+        selBox.style.position = 'fixed';
+        selBox.style.left = '0';
+        selBox.style.top = '0';
+        selBox.style.opacity = '0';
+        selBox.value = this.value;
+        document.body.appendChild(selBox);
+        selBox.focus();
+        selBox.select();
+        document.execCommand('copy');
+        document.body.removeChild(selBox);
     };
     FormComponent.prototype.ngOnInit = function () {
     };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"])('document:mousemove', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], FormComponent.prototype, "onMouseMove", null);
     FormComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-form',
@@ -260,12 +296,26 @@ var Service = /** @class */ (function () {
         this.http = http;
         this.check_url_general = '/checkgeneralurl';
         this.check_url_short = '/checkshorturl';
+        this.add_urls_url = '/addurls';
     }
     Service.prototype.check_general_url = function (checked_url) {
         return this.http.post(this.check_url_general, 'checked_url=' + checked_url, httpOptions);
     };
     Service.prototype.check_short_url = function (checked_url) {
         return this.http.post(this.check_url_short, 'checked_url=' + checked_url, httpOptions);
+    };
+    Service.prototype.check_urls_total = function (general_url, short_url, check_general, check_short) {
+        if (general_url != '' && general_url != null && general_url != undefined &&
+            short_url != '' && short_url != null && short_url != undefined &&
+            check_general != false && check_short != false) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    Service.prototype.add_urls = function (general_url, short_url) {
+        return this.http.post(this.add_urls_url, 'general_url=' + general_url + '&short_url=' + short_url, httpOptions);
     };
     Service = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),

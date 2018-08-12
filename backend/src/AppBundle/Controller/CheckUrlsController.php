@@ -8,56 +8,113 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouteCollection;
+
+use AppBundle\Entity\AddUrls;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CheckUrlsController extends Controller
 {
-    /**
-     * @Route("/checkgeneralurl", name="checkgeneralurl")
-     */
-    public function checkgeneralurlAction(Request $request)
-    {
-        $data = $request->request->get('checked_url');
-        $site_headers = get_headers($data);
-
-        preg_match('/\d{3}/', $site_headers[0], $status_code);
-
-        $status_code = intval($status_code[0]);
-
-        if ( $status_code >= 200 && $status_code < 400 ) {
-            $status_code = true;
-        } else {
-            $status_code = false;
-        }
-        return new JsonResponse(['status' => $status_code]);
-    }
 
     /**
      * @Route("/checkshorturl", name="checkshorturl")
      */
     public function checkshorturlAction(Request $request)
     {
-        $data = $request->request->get('checked_url');
+            $data = $request->request->get('checked_url');
+        if ($data) {
+
+          $router = $this->container->get('router');
+          $collection = $router->getRouteCollection();
+          $allRoutes = $collection->all();  
+          $answer = false;
 
 
-        $data = sprintf(
-          "%s://%s%s",
-          isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-          $_SERVER['SERVER_NAME'],
-          $data
-        );
+          foreach ($allRoutes as $route => $params)
+          {
+              $defaults = $params->getDefaults();
 
-        $site_headers = get_headers($data);
+              if (isset($defaults['_controller']))
+              {
+                if ($route != $data) 
+                {
+                  $answer = true;
+                }
 
-        preg_match('/\d{3}/', $site_headers[0], $status_code);
+                else
 
-        $status_code = intval($status_code[0]);
+                {
+                  $answer = false;
+                  break;
+                }
 
-        if ( $status_code >= 400 ) {
-            $status_code = true;
-        } else {
-            $status_code = false;
+              }
+          }
+          return new JsonResponse(['status' => $answer]);
+
+        } else {                
+            return $this->redirectToRoute('homepage');
         }
-        return new JsonResponse(['status' => $status_code]);
     }
-    
+
+    /**
+     * @Route("/checkgeneralurl", name="checkgeneralurl")
+     */
+    public function checkAction(Request $request)
+    {  
+         
+            $data = $request->request->get('checked_url');
+        if ($data) {
+            $site_headers = @get_headers($data);
+
+            $status_code = [];
+
+            if ( $site_headers ) 
+            { 
+              preg_match('/\d{3}/', $site_headers[0], $status_code);
+
+              $status_code = intval($status_code[0]);
+
+
+              if ( $status_code >= 200 && $status_code < 400 ) {
+                  $status_code = true;
+              } else {
+                  $status_code = false;
+              }
+            } 
+            else
+            {
+              $status_code = false;
+            }
+            return new JsonResponse(['status' => $status_code]);
+        } else {                
+            return $this->redirectToRoute('homepage');
+        }
+    }
+
+    /**
+     * @Route("/addurls", name="addurls")
+     */
+    public function addurlsAction(Request $request)
+    {  
+         
+        $general_url = $request->request->get('general_url');
+        $short_url = $request->request->get('short_url');
+
+        if ($general_url && $short_url) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $addUrls = new AddUrls();
+            $addUrls->setGeneralUrl($general_url);
+            $addUrls->setShortUrl($short_url);
+
+            $entityManager->persist($addUrls);
+            $entityManager->flush();
+
+            return new JsonResponse(['status' => true]);
+        } else {                
+            return $this->redirectToRoute('homepage');
+        }
+    }
+
 }

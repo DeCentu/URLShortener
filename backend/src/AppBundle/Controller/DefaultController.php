@@ -8,24 +8,37 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use AppBundle\Entity\AddUrls;
+use Doctrine\ORM\EntityManagerInterface;
+
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        // replace this example code with whatever you need
         return $this->render('default/index.html.twig');
     }
 
     /**
-     * @Route("/get", name="get")
-     */
-    public function getAction()
+    *@Route("/{slug}", name="reddirects")
+    */
+    public function redirectAction($slug) 
     {
-       return new JsonResponse(['general_url' => 'http://example.com/', 'short_url' => 'http://test.short/a']);
+        $product = $this->getDoctrine()
+        ->getRepository(AddUrls::class)
+        ->findOneByshortUrl($slug);
+
+        if( $product != null) {
+            $url = $product->generalUrl;
+
+            if( $url != null) {
+                return $this->redirect($url);
+            }
+        } else {
+            return $this->redirectToRoute('homepage');            
+        }
     }
-
-
-  
 }
