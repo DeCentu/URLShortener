@@ -15,13 +15,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">{{ this.service.url }}</span>
         </div>
-        <input type="text" (keyup)="onKey($event)" (keyup)="check_onBlur_short($event)" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        <input type="text" (keyup)="onKey($event)" value={{short_url}} (keyup)="check_onBlur_short($event)" class="form-control short_url" id="basic-url" aria-describedby="basic-addon3">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="generate()" type="button" id="button-addon1">Generate</button>
+        </div>
         <br/>
       </div>
-      
-      <small id="inputHelp" class="text-muted input-group mb-3">
-          Leave this field empty if you wanna generate an url
-      </small>
 
       <div *ngIf="check_shorter_url == false" class="alert alert-danger">This url already exist. Please, change url.</div>
       <div *ngIf="short_url_valid == false" class="alert alert-danger">This url not valid. Please, change url.</div>

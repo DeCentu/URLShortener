@@ -16,11 +16,12 @@ const httpOptions = {
 export class Service {
   check_url_general = '/checkgeneralurl';
   check_url_short = '/checkshorturl';
+  generate_url_url = '/generate';
   add_urls_url = '/addurls';
   get_urls_url = '/getList';
   login_url = '/login';
 
-  url = "http://127.0.0.1:8000/";
+  url = "http://maksim6x.beget.tech/";
 
   
   constructor( private http: HttpClient ) { }
@@ -57,6 +58,10 @@ export class Service {
 
   check_login(user: string, password: string) {
     return this.http.post(this.login_url, 'user=' + user + '&password=' + password, httpOptions);
+  }
+
+  generate_url(){
+    return this.http.get(this.generate_url_url, httpOptions);
   }
 
 }

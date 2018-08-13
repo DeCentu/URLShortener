@@ -185,10 +185,11 @@ var Service = /** @class */ (function () {
         this.http = http;
         this.check_url_general = '/checkgeneralurl';
         this.check_url_short = '/checkshorturl';
+        this.generate_url_url = '/generate';
         this.add_urls_url = '/addurls';
         this.get_urls_url = '/getList';
         this.login_url = '/login';
-        this.url = "http://127.0.0.1:8000/";
+        this.url = "http://maksim6x.beget.tech/";
     }
     Service.prototype.check_general_url = function (checked_url) {
         return this.http.post(this.check_url_general, 'checked_url=' + checked_url, httpOptions);
@@ -215,6 +216,9 @@ var Service = /** @class */ (function () {
     };
     Service.prototype.check_login = function (user, password) {
         return this.http.post(this.login_url, 'user=' + user + '&password=' + password, httpOptions);
+    };
+    Service.prototype.generate_url = function () {
+        return this.http.get(this.generate_url_url, httpOptions);
     };
     Service = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -245,7 +249,7 @@ module.exports = ".alert {\r\n    margin-top: 1rem;\r\n}\r\n\r\nbutton {\r\n\tma
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (keyup)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ this.service.url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" (keyup)=\"check_onBlur_short($event)\" class=\"form-control\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <br/>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          Leave this field empty if you wanna generate an url\r\n      </small>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      <div *ngIf=\"short_url_valid == false\" class=\"alert alert-danger\">This url not valid. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Generate</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control copyField\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"copyMessage()\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (keyup)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ this.service.url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" value={{short_url}} (keyup)=\"check_onBlur_short($event)\" class=\"form-control short_url\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"generate()\" type=\"button\" id=\"button-addon1\">Generate</button>\r\n        </div>\r\n        <br/>\r\n      </div>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      <div *ngIf=\"short_url_valid == false\" class=\"alert alert-danger\">This url not valid. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Generate</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control copyField\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"copyMessage()\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -317,6 +321,16 @@ var FormComponent = /** @class */ (function () {
         else {
             this.short_url_valid = false;
         }
+    };
+    FormComponent.prototype.generate = function () {
+        var _this = this;
+        this
+            .service
+            .generate_url()
+            .subscribe(function (data) {
+            _this.short_url = data['url'],
+                _this.checks_url = _this.service.check_urls_total(_this.general_url, _this.short_url, _this.check_general_url, data['status']);
+        });
     };
     FormComponent.prototype.addUrls = function () {
         var _this = this;

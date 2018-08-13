@@ -65,6 +65,15 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/generate", name="generate")
+     */
+    public function generateUrlAction(Request $request)
+    {       
+        $url = md5(uniqid(rand(),1));
+        return new JsonResponse(['url' => $url]);
+    }
+
+    /**
     *@Route("/{slug}", name="reddirects")
     */
     public function redirectAction($slug) 
