@@ -63,8 +63,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-
-Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
         this.title = 'URL Shortener';
@@ -99,11 +97,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/esm5/http.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/esm5/router.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/esm5/forms.js");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _form_form_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./form/form.component */ "./src/app/form/form.component.ts");
-/* harmony import */ var _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./redirects-list/redirects-list.component */ "./src/app/redirects-list/redirects-list.component.ts");
-/* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./login/login.component */ "./src/app/login/login.component.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _form_form_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./form/form.component */ "./src/app/form/form.component.ts");
+/* harmony import */ var _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./redirects-list/redirects-list.component */ "./src/app/redirects-list/redirects-list.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -117,20 +113,14 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
-
-
 var appRoutes = [
     {
         path: 'redirects-list',
-        component: _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_7__["RedirectsListComponent"]
-    },
-    {
-        path: 'create',
-        component: _form_form_component__WEBPACK_IMPORTED_MODULE_6__["FormComponent"]
+        component: _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_6__["RedirectsListComponent"]
     },
     {
         path: '',
-        component: _login_login_component__WEBPACK_IMPORTED_MODULE_8__["LoginComponent"]
+        component: _form_form_component__WEBPACK_IMPORTED_MODULE_5__["FormComponent"]
     }
 ];
 var AppModule = /** @class */ (function () {
@@ -139,19 +129,17 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
-                _form_form_component__WEBPACK_IMPORTED_MODULE_6__["FormComponent"],
-                _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_7__["RedirectsListComponent"],
-                _login_login_component__WEBPACK_IMPORTED_MODULE_8__["LoginComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
+                _form_form_component__WEBPACK_IMPORTED_MODULE_5__["FormComponent"],
+                _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_6__["RedirectsListComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(appRoutes, { enableTracing: true })
             ],
             providers: [],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -197,11 +185,10 @@ var Service = /** @class */ (function () {
         this.http = http;
         this.check_url_general = '/checkgeneralurl';
         this.check_url_short = '/checkshorturl';
-        this.generate_url_url = '/generate';
         this.add_urls_url = '/addurls';
         this.get_urls_url = '/getList';
         this.login_url = '/login';
-        this.url = "http://maksim6x.beget.tech/";
+        this.url = "http://127.0.0.1:8000/";
     }
     Service.prototype.check_general_url = function (checked_url) {
         return this.http.post(this.check_url_general, 'checked_url=' + checked_url, httpOptions);
@@ -220,18 +207,15 @@ var Service = /** @class */ (function () {
         }
     };
     Service.prototype.add_urls = function (general_url, short_url) {
+        var date = new Date();
         return this.http.post(this.add_urls_url, 'general_url=' + general_url + '&short_url=' + short_url, httpOptions);
     };
     Service.prototype.get_urls = function () {
         return this.http.get(this.get_urls_url);
     };
-    Service.prototype.generate_url = function () {
-        return this.http.get(this.generate_url_url, httpOptions);
+    Service.prototype.check_login = function (user, password) {
+        return this.http.post(this.login_url, 'user=' + user + '&password=' + password, httpOptions);
     };
-    Service.prototype.check_login = function (login, password) {
-        return this.http.post(this.login_url, 'username=' + login + '&password=' + password);
-    };
-    ;
     Service = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
@@ -261,7 +245,7 @@ module.exports = ".alert {\r\n    margin-top: 1rem;\r\n}\r\n\r\nbutton {\r\n\tma
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (keyup)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ this.service.url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" value={{short_url}} (keyup)=\"check_onBlur_short($event)\" class=\"form-control short_url\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"generate()\" type=\"button\" id=\"button-addon1\">Generate</button>\r\n        </div>\r\n        <br/>\r\n      </div>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      <div *ngIf=\"short_url_valid == false\" class=\"alert alert-danger\">This url not valid. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Add Pair</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control copyField\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"copyMessage()\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div *ngIf=\"added_urls == false\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <label for=\"basic-url\">Your URl</label>\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" class=\"form-control\" id=\"basic-url\" (keyup)=\"check_onBlur_general($event)\" aria-describedby=\"basic-addon3\">\r\n      </div>\r\n\r\n      <div *ngIf=\"check_general_url == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\r\n\r\n\r\n      <label for=\"basic-url\">Shortener URL\r\n      </label>\r\n      <div class=\"input-group mb-3\">\r\n        <div class=\"input-group-prepend\">\r\n          <span class=\"input-group-text\" id=\"basic-addon3\">{{ this.service.url }}</span>\r\n        </div>\r\n        <input type=\"text\" (keyup)=\"onKey($event)\" (keyup)=\"check_onBlur_short($event)\" class=\"form-control\" id=\"basic-url\" aria-describedby=\"basic-addon3\">\r\n        <br/>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          Leave this field empty if you wanna generate an url\r\n      </small>\r\n\r\n      <div *ngIf=\"check_shorter_url == false\" class=\"alert alert-danger\">This url already exist. Please, change url.</div>\r\n      <div *ngIf=\"short_url_valid == false\" class=\"alert alert-danger\">This url not valid. Please, change url.</div>\r\n      \r\n      <div class=\"input-group mb-3\">\r\n        <button [disabled]='checks_url ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Generate</button>\r\n      </div>\r\n    </div>\r\n\r\n\r\n      \r\n    <div *ngIf=\"added_urls == true\" class=\"col-sm-12 col-md-8 offset-md-2 jumbotron\">\r\n      <div class=\"input-group mb-3\">\r\n        <input type=\"text\" value=\"{{ value }}\" class=\"form-control copyField\" aria-label=\"Copy link\" aria-describedby=\"button-addon1\" readonly>\r\n        <div class=\"input-group-append\">\r\n          <button class=\"btn btn-outline-secondary\" (click)=\"copyMessage()\" type=\"button\" id=\"button-addon1\">Copy</button>\r\n        </div>\r\n      </div>\r\n      \r\n      <small id=\"inputHelp\" class=\"text-muted input-group mb-3\">\r\n          The URL pair will be deleted after 15 days\r\n      </small>\r\n    </div>\r\n\r\n\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -334,17 +318,6 @@ var FormComponent = /** @class */ (function () {
             this.short_url_valid = false;
         }
     };
-    FormComponent.prototype.generate = function () {
-        var _this = this;
-        this
-            .service
-            .generate_url()
-            .subscribe(function (data) {
-            _this.short_url = data['url'],
-                _this.checks_url = _this.service.check_urls_total(_this.general_url, _this.short_url, _this.check_general_url, data['status']),
-                _this.value = _this.service.url + data['url'];
-        });
-    };
     FormComponent.prototype.addUrls = function () {
         var _this = this;
         this
@@ -388,83 +361,6 @@ var FormComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/login/login.component.css":
-/*!*******************************************!*\
-  !*** ./src/app/login/login.component.css ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
-/***/ "./src/app/login/login.component.html":
-/*!********************************************!*\
-  !*** ./src/app/login/login.component.html ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-4 offset-md-4 jumbotron\">\n    \t<h3>Login</h3>\n\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"text\" class=\"form-control\" (keyup)=\"onKeyUp()\" [(ngModel)]=\"username\" id=\"basic-url\" placeholder=\"Username\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_username == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"text\" class=\"form-control\" (keyup)=\"onKeyUp()\" [(ngModel)]=\"password\" id=\"basic-url\" placeholder=\"Password\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_password == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\t      <div class=\"input-group mb-3\">\n\t        <button [disabled]='check_user ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Login</button>\n\t      </div>\n    </div>\n</div>"
-
-/***/ }),
-
-/***/ "./src/app/login/login.component.ts":
-/*!******************************************!*\
-  !*** ./src/app/login/login.component.ts ***!
-  \******************************************/
-/*! exports provided: LoginComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var _app_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../app.services */ "./src/app/app.services.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var LoginComponent = /** @class */ (function () {
-    function LoginComponent(service) {
-        this.service = service;
-        this.username = '';
-        this.password = '';
-    }
-    LoginComponent.prototype.onKeyUp = function () {
-        var _this = this;
-        this.service.check_login(this.username, this.password).subscribe(function (data) {
-            _this.check_username = data['check_username'],
-                _this.check_password = data['check_password'],
-                _this.check_user = data['check_user'];
-        });
-    };
-    LoginComponent.prototype.ngOnInit = function () {
-    };
-    LoginComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'app-login',
-            template: __webpack_require__(/*! ./login.component.html */ "./src/app/login/login.component.html"),
-            styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/login/login.component.css")],
-            providers: [_app_services__WEBPACK_IMPORTED_MODULE_1__["Service"]]
-        }),
-        __metadata("design:paramtypes", [_app_services__WEBPACK_IMPORTED_MODULE_1__["Service"]])
-    ], LoginComponent);
-    return LoginComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/redirects-list/redirects-list.component.css":
 /*!*************************************************************!*\
   !*** ./src/app/redirects-list/redirects-list.component.css ***!
@@ -483,7 +379,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n    \t\n\t\t<table class=\"table\">\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Date</td>\n\t\t\t\t\t<td>General Url</td>\n\t\t\t\t\t<td>Short Url</td>\n\t\t\t\t\t<td>Total Usage</td>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t  <tr *ngFor=\"let item of list\">\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.date }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.generalUrl }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{this.service.url}}{{ item.shortUrl }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.totalUsage }}\n\t\t\t\t</td>\n\t\t\t  </tr>\n\t\t\t</tbody>\n\t\t</table>\n    </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-8 offset-md-2\">\n    \t\n\t\t<table class=\"table\">\n\t\t\t<thead>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>Date</td>\n\t\t\t\t\t<td>General Url</td>\n\t\t\t\t\t<td>Short Url</td>\n\t\t\t\t\t<td>Total Usage</td>\n\t\t\t\t</tr>\n\t\t\t</thead>\n\t\t\t<tbody>\n\t\t\t  <tr *ngFor=\"let item of list\">\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.date }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.generalUrl }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{this.service.url}}{{ item.shortUrl }}\n\t\t\t\t</td>\n\t\t\t  \t<td>\n\t\t\t\t    {{ item.totalUsage }}\n\t\t\t\t</td>\n\t\t\t  </tr>\n\t\t\t</tbody>\n\t\t</table>\n    </div>\n</div>"
 
 /***/ }),
 

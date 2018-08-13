@@ -66,7 +66,8 @@ export class FormComponent implements OnInit {
       .service
         .generate_url()
           .subscribe(data => {this.short_url = data['url'],
-                              this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, data['status'])});
+                              this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, data['status']),
+                              this.value = this.service.url + data['url']});
   }
 
   addUrls() {

@@ -48,7 +48,6 @@ export class Service {
   }
 
   add_urls(general_url: string, short_url: string) {
-    var date = new Date();
     return this.http.post(this.add_urls_url, 'general_url=' + general_url + '&short_url=' + short_url, httpOptions);
   }
 
@@ -56,12 +55,16 @@ export class Service {
     return this.http.get(this.get_urls_url);
   }
 
-  check_login(user: string, password: string) {
-    return this.http.post(this.login_url, 'user=' + user + '&password=' + password, httpOptions);
-  }
-
   generate_url(){
     return this.http.get(this.generate_url_url, httpOptions);
+  }
+
+  check_login(login: string, password: string){
+    return this.http.post(this.login_url, 'username=' + login + '&password=' + password}, httpOptions);
+  }
+
+  login(login: string, password: string, login_check: boolean){
+    return this.http.post(this.login_url, '_username=' + login + '&password=' + password + '&login_check=' + login, httpOptions);
   }
 
 }

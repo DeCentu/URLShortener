@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouteCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Entity\AddUrls;
 use Doctrine\ORM\EntityManagerInterface;
@@ -120,7 +121,6 @@ class CheckUrlsController extends Controller
          
         $general_url = $request->request->get('general_url');
         $short_url = $request->request->get('short_url');
-        $date = $request->request->get('date');
 
         if ($general_url && $short_url) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -138,6 +138,31 @@ class CheckUrlsController extends Controller
         } else {                
             return $this->redirectToRoute('homepage');
         }
+    }
+
+    /**
+     * @Route("/generate", name="generate")
+     */
+    public function generateUrlAction(Request $request)
+    {       
+        $check = true;
+
+        while ( $check) {
+          $url = bin2hex(openssl_random_pseudo_bytes(4));
+
+
+          $test = $this->getDoctrine()
+          ->getRepository(AddUrls::class)
+          ->findOneByshortUrl($url);
+
+          if( $test != null) {
+            $check = true;
+          } else {
+            $check = false;
+          }
+        }
+        
+        return new JsonResponse(['url' => $url]);
     }
 
 }
