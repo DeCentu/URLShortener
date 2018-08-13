@@ -17,6 +17,10 @@ export class Service {
   check_url_general = '/checkgeneralurl';
   check_url_short = '/checkshorturl';
   add_urls_url = '/addurls';
+  get_urls_url = '/getList';
+  login_url = '/login';
+
+  url = "http://127.0.0.1:8000/";
 
   
   constructor( private http: HttpClient ) { }
@@ -43,7 +47,16 @@ export class Service {
   }
 
   add_urls(general_url: string, short_url: string) {
+    var date = new Date();
     return this.http.post(this.add_urls_url, 'general_url=' + general_url + '&short_url=' + short_url, httpOptions);
+  }
+
+  get_urls() {
+    return this.http.get(this.get_urls_url);
+  }
+
+  check_login(user: string, password: string) {
+    return this.http.post(this.login_url, 'user=' + user + '&password=' + password, httpOptions);
   }
 
 }

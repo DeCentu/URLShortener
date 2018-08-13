@@ -13,7 +13,7 @@
       </label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon3">{{ url }}</span>
+          <span class="input-group-text" id="basic-addon3">{{ this.service.url }}</span>
         </div>
         <input type="text" (keyup)="onKey($event)" (keyup)="check_onBlur_short($event)" class="form-control" id="basic-url" aria-describedby="basic-addon3">
         <br/>
@@ -24,6 +24,7 @@
       </small>
 
       <div *ngIf="check_shorter_url == false" class="alert alert-danger">This url already exist. Please, change url.</div>
+      <div *ngIf="short_url_valid == false" class="alert alert-danger">This url not valid. Please, change url.</div>
       
       <div class="input-group mb-3">
         <button [disabled]='checks_url ? false : true' (click)="addUrls()" type="button" class="btn btn-primary">Generate</button>
@@ -34,7 +35,7 @@
       
     <div *ngIf="added_urls == true" class="col-sm-12 col-md-8 offset-md-2 jumbotron">
       <div class="input-group mb-3">
-        <input type="text" value="{{ value }}" class="form-control" aria-label="Copy link" aria-describedby="button-addon1" readonly>
+        <input type="text" value="{{ value }}" class="form-control copyField" aria-label="Copy link" aria-describedby="button-addon1" readonly>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" (click)="copyMessage()" type="button" id="button-addon1">Copy</button>
         </div>

@@ -27,6 +27,8 @@ class CheckUrlsController extends Controller
           $router = $this->container->get('router');
           $collection = $router->getRouteCollection();
           $allRoutes = $collection->all();  
+          $answer1 = false;
+          $answer2 = false;
           $answer = false;
 
 
@@ -38,18 +40,36 @@ class CheckUrlsController extends Controller
               {
                 if ($route != $data) 
                 {
-                  $answer = true;
+                  $answer1 = true;
                 }
 
                 else
 
                 {
-                  $answer = false;
+                  $answer1 = false;
                   break;
                 }
 
               }
           }
+
+
+          $product = $this->getDoctrine()
+          ->getRepository(AddUrls::class)
+          ->findOneByshortUrl($data);
+
+          if( $product != null) {
+            $answer2 = false;
+          } else {
+            $answer2 = true;
+          }
+
+          if( $answer1 == true && $answer2 == true) {
+            $answer = true;
+          } else {
+            $answer = false;
+          }
+
           return new JsonResponse(['status' => $answer]);
 
         } else {                
@@ -100,6 +120,7 @@ class CheckUrlsController extends Controller
          
         $general_url = $request->request->get('general_url');
         $short_url = $request->request->get('short_url');
+        $date = $request->request->get('date');
 
         if ($general_url && $short_url) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -107,6 +128,8 @@ class CheckUrlsController extends Controller
             $addUrls = new AddUrls();
             $addUrls->setGeneralUrl($general_url);
             $addUrls->setShortUrl($short_url);
+            $addUrls->setDate(date('d-m-Y'));
+            $addUrls->setTotalUsage(0);
 
             $entityManager->persist($addUrls);
             $entityManager->flush();

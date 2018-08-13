@@ -24,16 +24,30 @@ class AddUrls
     /**
      * @var string
      *
-     * @ORM\Column(name="general_url", type="string", length=255)
+     * @ORM\Column(name="generalUrl", type="text")
      */
     public $generalUrl;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="short_url", type="string", length=255)
+     * @ORM\Column(name="shortUrl", type="text")
      */
     public $shortUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="date", type="text")
+     */
+    public $date;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="totalUsage", type="integer")
+     */
+    public $totalUsage;
 
 
     /**
@@ -92,6 +106,54 @@ class AddUrls
     public function getShortUrl()
     {
         return $this->shortUrl;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return AddUrls
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set totalUsage
+     *
+     * @param integer $totalUsage
+     *
+     * @return AddUrls
+     */
+    public function setTotalUsage($totalUsage)
+    {
+        $this->totalUsage = $totalUsage;
+
+        return $this;
+    }
+
+    /**
+     * Get totalUsage
+     *
+     * @return int
+     */
+    public function getTotalUsage()
+    {
+        return $this->totalUsage;
     }
 }
 

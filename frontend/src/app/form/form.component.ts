@@ -1,5 +1,6 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Service } from './form.services';
+import { Component, OnInit } from '@angular/core';
+import { Service } from '../app.services';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -9,11 +10,13 @@ import { Service } from './form.services';
 })
 export class FormComponent implements OnInit {
 
-	url = "http://127.0.0.1:8000/";
-	value = this.url;
+	value = this.service.url;
 
   check_general_url = true; // checking url where will be redirected
   check_shorter_url = true; // checking short url 
+
+  short_url_valid = true;
+
   done = true;
   added_urls = false;
 
@@ -22,35 +25,39 @@ export class FormComponent implements OnInit {
 
   checks_url = false;
 
-
-  @HostListener('document:mousemove', ['$event']) 
-  onMouseMove(e) {
-    this.check();
-  }
-
   constructor(private service: Service) { 
   }
 
   onKey(event: any) {
-    this.value = this.url + event.target.value;
+    this.value = this.service.url + event.target.value;
   }
 
   check_onBlur_general(event: any) {
+    this.checks_url = false;
       this
         .service
           .check_general_url(event.target.value)
-            .subscribe(data => this.check_general_url = data['status']);
+            .subscribe(data => {this.check_general_url = data['status'],
+                        this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, data['status'], this.check_shorter_url)});
 
       this.general_url = event.target.value;
   }
 
   check_onBlur_short(event: any) {
-      this
-        .service
-          .check_short_url(event.target.value)
-            .subscribe(data => this.check_shorter_url = data['status']);
+    if( this.short_url_validation(event.target.value) ) {
+      this.checks_url = false;
+      this.short_url_valid = true;
+
+        this
+          .service
+            .check_short_url(event.target.value)
+              .subscribe(data => {this.check_shorter_url = data['status'],
+                        this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, data['status'])});
 
       this.short_url = event.target.value;
+    } else {
+      this.short_url_valid = false;
+    }
       
   }
 
@@ -62,24 +69,27 @@ export class FormComponent implements OnInit {
   }
 
   check() {
-    this.checks_url = this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, this.check_shorter_url);
+    return this.service.check_urls_total(this.general_url, this.short_url, this.check_general_url, this.check_shorter_url);
   }
 
   copyMessage() {
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = this.value;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
+    var copyBox = document.getElementsByClassName('copyField');
+    copyBox[0].focus();
+    copyBox[0].select();
     document.execCommand('copy');
-    document.body.removeChild(selBox);
   }
 
   ngOnInit() {
+  }
+
+  private short_url_validation(val: string) {
+    var tested = /\W/g.test(val);
+
+    if( tested ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }
