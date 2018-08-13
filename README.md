@@ -37,6 +37,20 @@ test server: http://maksim6x.beget.tech/
 Фронтенд часть проекта представллена двумя компонентами, которые соответствуют путям `''` и `'/redirects-list'`.
 Все функции, реализующие "общение" с сервером вынесены в корень папки `/app/`, в файл `spp.service.ts`. 
 
+#### `app/app.services.ts`
+
+`check_general_url(checked_url: string)` - принимает ссылку на сайт. Проверяет статус. Возвращает `boolean`. (`/checkgeneralurl`)
+
+`check_short_url(checked_url: string)` - принимает короткую ссылку. Проверяет совпадения с зарезервированными путями и наличие в базе. Возвращает `boolean`. ( `/checkshorturl`)
+
+`check_urls_total(general_url: string, short_url: string, check_general: boolean, check_short: boolean)` - доп. проверка. Влияет на активность кнопки. Принимает ссылку на сайт, короткую, результат проверки основной ссылки, результат проверки короткой. Сделано для полного исключения создания не валидных ссылок. Возвращает `boolean`.
+
+`add_urls(general_url: string, short_url: string)` - принимает пару ссылок. Основную и короткую. Заносит в базу данных. Возвращает boolean.
+
+`get_urls()` - возвращает объект с массивами ссылок.
+
+`generate_url()` - возвращает захешированное в md5 время сервера. ( не самое лучшее решение, но гарантирует уникальность )
+
 ### Back end
 
 Бэк енд часть представленна двумя контроллерами. `Default` и `CheckUrls`.
@@ -44,6 +58,26 @@ test server: http://maksim6x.beget.tech/
 В `CheckUrls` - `/checkshorturl`, `/checkgeneralurl`, `/addurls`.
 
 В файл `config/Resources/views/default/index.html.twig` помещена структура фронтенд приложения. В папку `web/dist` - скрипты и стили.
+
+#### `src/AppBundle/Controller/DefaultController.php`
+
+`indexAction` - вывод главной страницы. Тут же происходит проверка ссылок на истечение срока 15 суток. Если истек - удаляет запись. ( не лучшее решение, но работает. Требует переработки при большом потоке посетителей и большом количестве ссылок в бд )
+
+`redirectsListAction` - вывод списка. Angular Component - `redirects-list`
+
+`getListAction` - принимает post request. Возвращает список ссылок
+
+`generateUrlAction` - генерирует и возвращает уникальную ссылку 
+
+`redirectAction` - перенаправление на конечный сайт.
+
+#### `src/AppBundle/Controller/CheckUrlsController.php`
+
+`checkshorturlAction` - проверка короткой ссылки. Возвращает boolean. При попытке перехода - редирект на главную страницу.
+
+`checkAction` - проверка основной ссылки. Возвращает boolean. При попытке перехода - редирект на главную страницу.
+
+`addurlsAction` -  добавление ссылок в бд. Возвращает true. При попытке перехода - редирект на главную страницу.
 
 ## P.s.
 Думаю, что особенно подробно рассматривать функции не имеет смысла.
