@@ -2,6 +2,11 @@
 test project
 test server: http://maksim6x.beget.tech/
 
+## Auth 
+
+* Login: admin
+* Pass: 123321
+
 ## Описание проекта
 
 #### Главная страница ( http://maksim6x.beget.tech/ )
