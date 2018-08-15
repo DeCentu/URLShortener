@@ -18,7 +18,7 @@ test server: http://maksim6x.beget.tech/
 При клике на Add Pair добавляется новая пара в базу данных и перенаправляет пользователя на экран "копирования ссылки".
 На экране "копирования ссылки" `input` с получившейся ссылкой и кнопка Copy, копирующая ссылку...
 
-#### Список пар ( http://maksim6x.beget.tech/redirects-list )
+#### Список пар ( http://maksim6x.beget.tech/list )
 
 Таблица со всеми ссылками. Дата создания, основная ссылка, короткая ссылка, количество "редиректов".
 
@@ -30,7 +30,9 @@ test server: http://maksim6x.beget.tech/
 /checkshorturl
 /generate
 /addurls
-/getList
+/getlist
+/login
+/login_check
 
 ### Front end
 
@@ -51,6 +53,10 @@ test server: http://maksim6x.beget.tech/
 
 `generate_url()` - возвращает захешированное в md5 время сервера. ( не самое лучшее решение, но гарантирует уникальность )
 
+`login_check(login: string, password: string)` - отправляет на проверку имя пользователя и пароль. Возвращает два значения типа boolean. 
+
+`login(login: string, password: string)` - отправляет имя пользователя и пароль для авторизации.
+
 ### Back end
 
 Бэк енд часть представленна двумя контроллерами. `Default` и `CheckUrls`.
@@ -63,11 +69,13 @@ test server: http://maksim6x.beget.tech/
 
 `indexAction` - вывод главной страницы. Тут же происходит проверка ссылок на истечение срока 15 суток. Если истек - удаляет запись. ( не лучшее решение, но работает. Требует переработки при большом потоке посетителей и большом количестве ссылок в бд )
 
+#### `src/AppBundle/Controller/ListUrlController.php`
+
 `redirectsListAction` - вывод списка. Angular Component - `redirects-list`
 
 `getListAction` - принимает post request. Возвращает список ссылок
 
-`generateUrlAction` - генерирует и возвращает уникальную ссылку 
+#### `src/AppBundle/Controller/RedirectsController.php`
 
 `redirectAction` - перенаправление на конечный сайт.
 
@@ -79,6 +87,10 @@ test server: http://maksim6x.beget.tech/
 
 `addurlsAction` -  добавление ссылок в бд. Возвращает true. При попытке перехода - редирект на главную страницу.
 
-## P.s.
-Думаю, что особенно подробно рассматривать функции не имеет смысла.
-Уверен, что организацию структуры проекта и кода мог бы сделать и лучше. Но тогда б я до бесконечности делал бы тестовое задание :D 
+`generateUrlAction` - генерирует и возвращает уникальную ссылку 
+
+#### `src/AppBundle/Controller/LoginController.php`
+
+`loginAction` - проверка наличия пользователя. Принимает имя и пароль типа `string`. Возвращает массив из трёх переменных типа boolean. ( ради этого пришлось сделать `password` пользователя публичным. Не нашёл как в symfony работать с ошибками авторизации... )
+
+`login` - страница авторизации
