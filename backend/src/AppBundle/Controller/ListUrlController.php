@@ -12,19 +12,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\AddUrls;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UrlListController extends Controller
+class ListUrlController extends Controller
 {
 
     /**
-     * @Route("/redirects-list", name="redirects-list")
+     * @Security("has_role('ROLE_USER')")
+     * @Route("/list", name="list")
      */
-    public function redirectsListAction(Request $request)
+    public function redirectsListAction()
     {
         return $this->render('default/index.html.twig');
     }
     
     /**
-     * @Route("/getList", name="getList")
+     * @Route("/getlist", name="getList")
      */
     public function getListAction(Request $request)
     {       

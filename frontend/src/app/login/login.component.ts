@@ -16,16 +16,31 @@ export class LoginComponent implements OnInit {
 	username = '';
 	password = '';
 
+  redirect_val: void;
+
   constructor(private service: Service) { 
   }
 
-  onKeyUp() {
-  	this.service.check_login(this.username, this.password).subscribe( data =>
+  login() {
+  	this.service.login_check(this.username, this.password).subscribe( data =>
   	{
   		this.check_username = data['check_username'],
   		this.check_password = data['check_password'],
-  		this.check_user = data['check_user']
+      this.redirect_val = this.redirect(data['check_user'])
    	});
+
+    this.service.login(this.username, this.password).subscribe( data =>
+    {
+      this.check_username = data['check_username'],
+      this.check_password = data['check_password'],
+      this.check_user = data['check_user']
+    });
+  }
+
+  redirect(check: boolean) {
+    if( check ){
+      window.location.replace(this.service.url);
+    }
   }
 
   ngOnInit() {

@@ -16,7 +16,7 @@ class RedirectsController extends Controller
 {
 
     /**
-    *@Route("/{slug}", name="reddirects")
+    * @Route("/{slug}", name="reddirects")
     */
     public function redirectAction($slug) 
     {
@@ -29,8 +29,7 @@ class RedirectsController extends Controller
           $router = $this->container->get('router');
           $collection = $router->getRouteCollection();
           $allRoutes = $collection->all();  
-          $check = false;
-
+          $check = 0;
 
           foreach ($allRoutes as $route => $params)
           {
@@ -53,6 +52,7 @@ class RedirectsController extends Controller
               }
           }
 
+
         if( $product != null && $check) {
             $url = $product->generalUrl;
 
@@ -63,8 +63,9 @@ class RedirectsController extends Controller
 
                 return $this->redirect($url);
             }
-        } else {                
-            return $this->redirectToRoute('homepage');
+        } 
+        else {         
+          return $this->redirectToRoute('homepage');
         }
     }
 }

@@ -16,6 +16,7 @@ class DefaultController extends Controller
 {
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
@@ -36,14 +37,6 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('default/index.html.twig');
-    }
-    
-    /**
-     * @Route("/create", name="create")
-     */
-    public function createAction(Request $request)
-    {
         return $this->render('default/index.html.twig');
     }
 }

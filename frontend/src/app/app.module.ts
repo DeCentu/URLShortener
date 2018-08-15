@@ -12,15 +12,15 @@ import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
   {
-    path: 'redirects-list',
+    path: 'list',
     component: RedirectsListComponent
   },
    {
-    path: 'create',
+    path: '',
     component: FormComponent
   },
    {
-    path: '',
+    path: 'login',
     component: LoginComponent
   }
 ]
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true}
+      { enableTracing: false}
       )
   ],
   providers: [],

@@ -121,15 +121,15 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 var appRoutes = [
     {
-        path: 'redirects-list',
+        path: 'list',
         component: _redirects_list_redirects_list_component__WEBPACK_IMPORTED_MODULE_7__["RedirectsListComponent"]
     },
     {
-        path: 'create',
+        path: '',
         component: _form_form_component__WEBPACK_IMPORTED_MODULE_6__["FormComponent"]
     },
     {
-        path: '',
+        path: 'login',
         component: _login_login_component__WEBPACK_IMPORTED_MODULE_8__["LoginComponent"]
     }
 ];
@@ -148,7 +148,7 @@ var AppModule = /** @class */ (function () {
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
-                _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(appRoutes, { enableTracing: true })
+                _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(appRoutes, { enableTracing: false })
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
@@ -199,7 +199,8 @@ var Service = /** @class */ (function () {
         this.check_url_short = '/checkshorturl';
         this.generate_url_url = '/generate';
         this.add_urls_url = '/addurls';
-        this.get_urls_url = '/getList';
+        this.get_urls_url = '/getlist';
+        this.login_check_url = '/check_login';
         this.login_url = '/login';
         this.url = "http://maksim6x.beget.tech/";
     }
@@ -228,10 +229,12 @@ var Service = /** @class */ (function () {
     Service.prototype.generate_url = function () {
         return this.http.get(this.generate_url_url, httpOptions);
     };
-    Service.prototype.check_login = function (login, password) {
-        return this.http.post(this.login_url, 'username=' + login + '&password=' + password);
+    Service.prototype.login_check = function (login, password) {
+        return this.http.post(this.login_check_url, '_username=' + login + '&_password=' + password, httpOptions);
     };
-    ;
+    Service.prototype.login = function (login, password) {
+        return this.http.post(this.login_url, '_username=' + login + '&_password=' + password, httpOptions);
+    };
     Service = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
@@ -406,7 +409,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-4 offset-md-4 jumbotron\">\n    \t<h3>Login</h3>\n\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"text\" class=\"form-control\" (keyup)=\"onKeyUp()\" [(ngModel)]=\"username\" id=\"basic-url\" placeholder=\"Username\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_username == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"text\" class=\"form-control\" (keyup)=\"onKeyUp()\" [(ngModel)]=\"password\" id=\"basic-url\" placeholder=\"Password\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_password == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\t      <div class=\"input-group mb-3\">\n\t        <button [disabled]='check_user ? false : true' (click)=\"addUrls()\" type=\"button\" class=\"btn btn-primary\">Login</button>\n\t      </div>\n    </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-4 offset-md-4 jumbotron\">\n    \t<h3>Login</h3>\n\t\t\n\t\t<!-- <form action=\"/login\" method=\"POST\"> -->\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"text\" class=\"form-control\" name=\"_username\" [(ngModel)]=\"username\" id=\"basic-url\" placeholder=\"Username\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_username == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\n\t      <div class=\"input-group mb-3\">\n\t        <input type=\"password\" name=\"_password\" class=\"form-control\" [(ngModel)]=\"password\" id=\"basic-url\" placeholder=\"Password\" aria-describedby=\"basic-addon3\">\n\t      </div>\n\n\t      <div *ngIf=\"check_password == false\" class=\"alert alert-danger\">Url is invalid. Please, check this or try later</div>\n\n\t      <div class=\"input-group mb-3\">\n\t        <button (click)=\"login()\" type=\"button\" class=\"btn btn-primary\">Login</button>\n\t      </div>\n\t    <!-- </form> -->\n    </div>\n</div>"
 
 /***/ }),
 
@@ -439,13 +442,23 @@ var LoginComponent = /** @class */ (function () {
         this.username = '';
         this.password = '';
     }
-    LoginComponent.prototype.onKeyUp = function () {
+    LoginComponent.prototype.login = function () {
         var _this = this;
-        this.service.check_login(this.username, this.password).subscribe(function (data) {
+        this.service.login_check(this.username, this.password).subscribe(function (data) {
+            _this.check_username = data['check_username'],
+                _this.check_password = data['check_password'],
+                _this.redirect_val = _this.redirect(data['check_user']);
+        });
+        this.service.login(this.username, this.password).subscribe(function (data) {
             _this.check_username = data['check_username'],
                 _this.check_password = data['check_password'],
                 _this.check_user = data['check_user'];
         });
+    };
+    LoginComponent.prototype.redirect = function (check) {
+        if (check) {
+            window.location.replace(this.service.url);
+        }
     };
     LoginComponent.prototype.ngOnInit = function () {
     };

@@ -18,7 +18,8 @@ export class Service {
   check_url_short = '/checkshorturl';
   generate_url_url = '/generate';
   add_urls_url = '/addurls';
-  get_urls_url = '/getList';
+  get_urls_url = '/getlist';
+  login_check_url = '/check_login';
   login_url = '/login';
 
   url = "http://maksim6x.beget.tech/";
@@ -59,12 +60,12 @@ export class Service {
     return this.http.get(this.generate_url_url, httpOptions);
   }
 
-  check_login(login: string, password: string){
-    return this.http.post(this.login_url, 'username=' + login + '&password=' + password}, httpOptions);
+  login_check(login: string, password: string){
+    return this.http.post(this.login_check_url, '_username=' + login + '&_password=' + password, httpOptions);
   }
 
-  login(login: string, password: string, login_check: boolean){
-    return this.http.post(this.login_url, '_username=' + login + '&password=' + password + '&login_check=' + login, httpOptions);
+  login(login: string, password: string){
+    return this.http.post(this.login_url, '_username=' + login + '&_password=' + password, httpOptions);
   }
 
 }
